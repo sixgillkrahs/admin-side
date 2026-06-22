@@ -49,9 +49,16 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
+**Wave 1**
 
 - [ ] 02-01: Implement User Directory table (RBAC-01).
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 02-02: Implement Role & Permission Matrix (RBAC-02).
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 02-03: Implement User Role Assignment modal form (RBAC-03).
 
 ### Phase 3: Dashboard Vitals
