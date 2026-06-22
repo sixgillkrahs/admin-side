@@ -15,11 +15,11 @@ Enable secure, clear, and efficient administration of the platform, specifically
 - ✓ React + Vite + TypeScript development environment initialized — existing
 - ✓ Tailwind CSS v4 & Shadcn UI design tokens and theme integration — existing
 - ✓ Reusable Button primitive (`src/components/ui/button.tsx`) and `cn` utilities — existing
+- ✓ Set up a feature-based folder structure inside `src/features/` — Validated in Phase 1: layout-foundation
+- ✓ Create `src/components/common/` directory for shared UI layouts and components (e.g. Navigation, Headers) — Validated in Phase 1: layout-foundation
 
 ### Active
 
-- [ ] Set up a feature-based folder structure inside `src/features/`
-- [ ] Create `src/components/common/` directory for shared UI layouts and components (e.g. Navigation, Headers)
 - [ ] Implement Dashboard screen with overview metrics and platform status
 - [ ] Implement RBAC (Role-Based Access Control) management screens (User, Role, and Permission tables/forms)
 
@@ -47,7 +47,7 @@ Enable secure, clear, and efficient administration of the platform, specifically
 | Tailwind v4 + Vite plugin | Leverages Vite native css compilation instead of legacy PostCSS setups | ✓ Good |
 
 ---
-*Last updated: 2026-06-22 after initialization*
+*Last updated: 2026-06-22 after Phase 1 completion*
 
 ## Evolution
 
