@@ -6,7 +6,7 @@ Roadmap for building the admin control panel. We will construct the application 
 
 ## Phases
 
-- [ ] **Phase 1: Layout & Foundation** - Initialize feature directories and render the navigation shell.
+- [x] **Phase 1: Layout & Foundation** - Initialize feature directories and render the navigation shell. (completed 2026-06-22)
 - [ ] **Phase 2: User Directory & RBAC Integration** - Build user directory tables and role mapping utilities.
 - [ ] **Phase 3: Dashboard Vitals** - Implement overview statistics cards and system summary grids.
 
@@ -23,16 +23,16 @@ Roadmap for building the admin control panel. We will construct the application 
   1. Directory structure matching feature-based rules created inside `src/features/`.
   2. Sidebar navigation shell rendered on screen inside common layout (`src/components/common/Sidebar.tsx`).
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 **Wave 1**
 
-- [ ] 01-01: Initialize feature base directories and `src/components/common` folder.
+- [x] 01-01: Initialize feature base directories and `src/components/common` folder.
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02: Build common Sidebar layout and wire it into the root component.
+- [x] 01-02: Build common Sidebar layout and wire it into the root component.
 
 ### Phase 2: User Directory & RBAC Integration
 
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1 | 0/2 | Not started | - |
+| 1 | 2/2 | Complete    | 2026-06-22 |
 | 2 | 0/3 | Not started | - |
 | 3 | 0/1 | Not started | - |
 

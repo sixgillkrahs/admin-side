@@ -7,8 +7,8 @@
 
 ### Structure & Foundation
 
-- [ ] **STRUCT-01**: Create a feature-based folder structure inside `src/features/` (for modular page segregation).
-- [ ] **STRUCT-02**: Initialize `src/components/common/` directory for shared navigation shells (Sidebar, Header).
+- [x] **STRUCT-01**: Create a feature-based folder structure inside `src/features/` (for modular page segregation).
+- [x] **STRUCT-02**: Initialize `src/components/common/` directory for shared navigation shells (Sidebar, Header).
 
 ### Dashboard Vitals
 
@@ -45,14 +45,15 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STRUCT-01 | Phase 1 | Pending |
-| STRUCT-02 | Phase 1 | Pending |
+| STRUCT-01 | Phase 1 | Complete |
+| STRUCT-02 | Phase 1 | Complete |
 | DASH-01 | Phase 3 | Pending |
 | RBAC-01 | Phase 2 | Pending |
 | RBAC-02 | Phase 2 | Pending |
 | RBAC-03 | Phase 2 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 6 total
 - Mapped to phases: 6
 - Unmapped: 0
