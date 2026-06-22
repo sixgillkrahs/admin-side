@@ -7,7 +7,7 @@ Roadmap for building the admin control panel. We will construct the application 
 ## Phases
 
 - [x] **Phase 1: Layout & Foundation** - Initialize feature directories and render the navigation shell. (completed 2026-06-22)
-- [ ] **Phase 2: User Directory & RBAC Integration** - Build user directory tables and role mapping utilities.
+- [x] **Phase 2: User Directory & RBAC Integration** - Build user directory tables and role mapping utilities. (completed 2026-06-22)
 - [ ] **Phase 3: Dashboard Vitals** - Implement overview statistics cards and system summary grids.
 
 ## Phase Details
@@ -46,7 +46,7 @@ Plans:
   2. Role & Permission matrix component rendered showing mapped access rules.
   3. User role assignment modal opens, updates selected user's role badge, and closes.
 
-**Plans:** 3 plans
+**Plans:** 0/3 plans complete
 
 Plans:
 **Wave 1**
@@ -84,7 +84,7 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1 | 2/2 | Complete    | 2026-06-22 |
-| 2 | 0/3 | Not started | - |
+| 2 | 0/3 | Complete    | 2026-06-22 |
 | 3 | 0/1 | Not started | - |
 
 ---

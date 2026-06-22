@@ -16,9 +16,9 @@
 
 ### RBAC Access Management
 
-- [ ] **RBAC-01**: Render a searchable, paginated User Directory Table containing profiles, user status, and role badges.
-- [ ] **RBAC-02**: Render a Role & Permission Matrix displaying all available roles and their granular access claims.
-- [ ] **RBAC-03**: Form/Modal window to assign and update roles for a selected user.
+- [x] **RBAC-01**: Render a searchable, paginated User Directory Table containing profiles, user status, and role badges.
+- [x] **RBAC-02**: Render a Role & Permission Matrix displaying all available roles and their granular access claims.
+- [x] **RBAC-03**: Form/Modal window to assign and update roles for a selected user.
 
 ## v2 Requirements
 
@@ -48,9 +48,9 @@
 | STRUCT-01 | Phase 1 | Complete |
 | STRUCT-02 | Phase 1 | Complete |
 | DASH-01 | Phase 3 | Pending |
-| RBAC-01 | Phase 2 | Pending |
-| RBAC-02 | Phase 2 | Pending |
-| RBAC-03 | Phase 2 | Pending |
+| RBAC-01 | Phase 2 | Complete |
+| RBAC-02 | Phase 2 | Complete |
+| RBAC-03 | Phase 2 | Complete |
 
 **Coverage:**
 
