@@ -1,0 +1,62 @@
+# Requirements: admin-side
+
+**Defined:** 2026-06-22
+**Core Value:** Enable secure, clear, and efficient administration of the platform, specifically focusing on user roles and permissions management (RBAC).
+
+## v1 Requirements
+
+### Structure & Foundation
+
+- [ ] **STRUCT-01**: Create a feature-based folder structure inside `src/features/` (for modular page segregation).
+- [ ] **STRUCT-02**: Initialize `src/components/common/` directory for shared navigation shells (Sidebar, Header).
+
+### Dashboard Vitals
+
+- [ ] **DASH-01**: Render Overview KPI summary cards displaying Total Users, Active Roles, Active Sessions, and API Traffic.
+
+### RBAC Access Management
+
+- [ ] **RBAC-01**: Render a searchable, paginated User Directory Table containing profiles, user status, and role badges.
+- [ ] **RBAC-02**: Render a Role & Permission Matrix displaying all available roles and their granular access claims.
+- [ ] **RBAC-03**: Form/Modal window to assign and update roles for a selected user.
+
+## v2 Requirements
+
+### Dashboard Vitals
+
+- **DASH-02**: Interactive Recharts graphs displaying platform traffic trends.
+
+### RBAC Access Management
+
+- **RBAC-04**: Role Creation and Permission Policy Editor form to register custom roles.
+
+### Security & Auditing
+
+- **AUDIT-01**: Real-time websocket audit log feed displaying admin operations.
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Go backend API endpoints | Handled in the backend microservice codebase. |
+| Per-user inline permission overrides | Violates RBAC best practices, introduces security debt, and breaks permission audit trails. |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| STRUCT-01 | Phase 1 | Pending |
+| STRUCT-02 | Phase 1 | Pending |
+| DASH-01 | Phase 3 | Pending |
+| RBAC-01 | Phase 2 | Pending |
+| RBAC-02 | Phase 2 | Pending |
+| RBAC-03 | Phase 2 | Pending |
+
+**Coverage:**
+- v1 requirements: 6 total
+- Mapped to phases: 6
+- Unmapped: 0
+
+---
+*Requirements defined: 2026-06-22*
+*Last updated: 2026-06-22 after initialization*
