@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Users, ShieldCheck, Activity, Zap } from 'lucide-react';
+import { ResponsiveContainer, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export function DashboardOverview() {
   const { t } = useTranslation();
@@ -44,6 +45,25 @@ export function DashboardOverview() {
     },
   ];
 
+  const requestVolumeData = [
+    { name: t('dashboard.charts.days.mon'), requests: 1200 },
+    { name: t('dashboard.charts.days.tue'), requests: 1900 },
+    { name: t('dashboard.charts.days.wed'), requests: 1500 },
+    { name: t('dashboard.charts.days.thu'), requests: 2200 },
+    { name: t('dashboard.charts.days.fri'), requests: 3000 },
+    { name: t('dashboard.charts.days.sat'), requests: 2400 },
+    { name: t('dashboard.charts.days.sun'), requests: 1800 },
+  ];
+
+  const hourlySessionsData = [
+    { hour: '00:00', sessions: 4 },
+    { hour: '04:00', sessions: 2 },
+    { hour: '08:00', sessions: 8 },
+    { hour: '12:00', sessions: 12 },
+    { hour: '16:00', sessions: 15 },
+    { hour: '20:00', sessions: 10 },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
@@ -51,6 +71,7 @@ export function DashboardOverview() {
         <p className="text-muted-foreground mt-1">{t('dashboard.description')}</p>
       </div>
 
+      {/* KPI Cards Grid */}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, idx) => {
           const Icon = kpi.icon;
@@ -83,6 +104,99 @@ export function DashboardOverview() {
             </div>
           );
         })}
+      </div>
+
+      {/* Charts Grid */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        {/* API Request Volume Chart */}
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div>
+            <h3 className="text-base font-semibold text-foreground">{t('dashboard.charts.trafficTitle')}</h3>
+            <p className="text-xs text-muted-foreground mt-1">{t('dashboard.charts.trafficSub')}</p>
+          </div>
+          <div className="mt-6">
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={requestVolumeData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="var(--muted-foreground)" 
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  stroke="var(--muted-foreground)" 
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'var(--card)', 
+                    borderColor: 'var(--border)',
+                    borderRadius: 'var(--radius)',
+                    color: 'var(--foreground)'
+                  }} 
+                  labelStyle={{ fontWeight: 'bold' }}
+                />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="requests" 
+                  name={t('dashboard.charts.requests')} 
+                  stroke="var(--primary)"
+                  strokeWidth={2} 
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Hourly Sessions Chart */}
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div>
+            <h3 className="text-base font-semibold text-foreground">{t('dashboard.charts.sessionsTitle')}</h3>
+            <p className="text-xs text-muted-foreground mt-1">{t('dashboard.charts.sessionsSub')}</p>
+          </div>
+          <div className="mt-6">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={hourlySessionsData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis 
+                  dataKey="hour" 
+                  stroke="var(--muted-foreground)" 
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  stroke="var(--muted-foreground)" 
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'var(--card)', 
+                    borderColor: 'var(--border)',
+                    borderRadius: 'var(--radius)',
+                    color: 'var(--foreground)'
+                  }} 
+                  labelStyle={{ fontWeight: 'bold' }}
+                />
+                <Legend />
+                <Bar 
+                  dataKey="sessions" 
+                  name={t('dashboard.charts.sessions')} 
+                  fill="var(--primary)" 
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   );
