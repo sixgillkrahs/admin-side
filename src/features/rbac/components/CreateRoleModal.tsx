@@ -8,29 +8,31 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 interface CreateRoleModalProps {
   isOpen: boolean;
   onClose: () => void;
   existingRoles: string[];
-  onSave: (roleName: string, permissions: Record<string, boolean>) => void;
+  onSave: (roleName: string, description: string) => Promise<void>;
+  isSaving?: boolean;
 }
 
-export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: CreateRoleModalProps) {
+export function CreateRoleModal({
+  isOpen,
+  onClose,
+  existingRoles,
+  onSave,
+  isSaving = false,
+}: CreateRoleModalProps) {
   const { t } = useTranslation();
   const [roleName, setRoleName] = useState('');
-  const [permissions, setPermissions] = useState<Record<string, boolean>>({
-    'read:messages': false,
-    'write:messages': false,
-    'manage:roles': false,
-    'admin:all': false,
-  });
+  const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = roleName.trim();
 
@@ -44,48 +46,13 @@ export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: Crea
       return;
     }
 
-    onSave(trimmedName, permissions);
+    await onSave(trimmedName, description.trim());
     // Reset form states
     setRoleName('');
-    setPermissions({
-      'read:messages': false,
-      'write:messages': false,
-      'manage:roles': false,
-      'admin:all': false,
-    });
+    setDescription('');
     setError(null);
     onClose();
   };
-
-  const handleCheckboxChange = (key: string, checked: boolean) => {
-    setPermissions((prev) => ({
-      ...prev,
-      [key]: checked,
-    }));
-  };
-
-  const permissionItems = [
-    {
-      key: 'read:messages',
-      label: 'read:messages',
-      descKey: 'rbac.matrix.readMessages',
-    },
-    {
-      key: 'write:messages',
-      label: 'write:messages',
-      descKey: 'rbac.matrix.writeMessages',
-    },
-    {
-      key: 'manage:roles',
-      label: 'manage:roles',
-      descKey: 'rbac.matrix.manageRoles',
-    },
-    {
-      key: 'admin:all',
-      label: 'admin:all',
-      descKey: 'rbac.matrix.adminAll',
-    },
-  ];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -97,7 +64,7 @@ export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: Crea
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 py-2">
+        <form onSubmit={handleSubmit} className="space-y-5 py-2">
           {/* Role Name Field */}
           <div className="space-y-2">
             <label htmlFor="role-name-input" className="text-xs font-semibold text-foreground">
@@ -113,6 +80,7 @@ export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: Crea
               placeholder={t('rbac.createRoleModal.namePlaceholder')}
               className={error ? 'border-destructive focus-visible:ring-destructive/50' : ''}
               autoFocus
+              disabled={isSaving}
             />
             {error && (
               <p className="text-xs font-medium text-destructive mt-1.5 transition-all">
@@ -121,37 +89,18 @@ export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: Crea
             )}
           </div>
 
-          {/* Permissions Checklist */}
-          <div className="space-y-3">
-            <label className="text-xs font-semibold text-foreground">
-              {t('rbac.createRoleModal.permissionsLabel')}
+          {/* Description Field */}
+          <div className="space-y-2">
+            <label htmlFor="role-desc-input" className="text-xs font-semibold text-foreground">
+              Description <span className="font-normal text-muted-foreground">(optional)</span>
             </label>
-            <div className="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
-              {permissionItems.map((item) => (
-                <div
-                  key={item.key}
-                  className="flex items-start gap-3 rounded-lg border border-border bg-muted/20 p-3 select-none hover:bg-muted/40 transition-colors"
-                >
-                  <Checkbox
-                    id={`permission-${item.key}`}
-                    checked={permissions[item.key]}
-                    onCheckedChange={(checked) => handleCheckboxChange(item.key, !!checked)}
-                    className="mt-0.5 cursor-pointer"
-                  />
-                  <div className="grid gap-1">
-                    <label
-                      htmlFor={`permission-${item.key}`}
-                      className="text-xs font-bold leading-none text-foreground cursor-pointer"
-                    >
-                      {item.label}
-                    </label>
-                    <span className="text-[11px] text-muted-foreground leading-normal">
-                      {t(item.descKey)}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Input
+              id="role-desc-input"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Brief description of this role's purpose…"
+              disabled={isSaving}
+            />
           </div>
 
           {/* Footer Actions */}
@@ -161,15 +110,24 @@ export function CreateRoleModal({ isOpen, onClose, existingRoles, onSave }: Crea
               variant="outline"
               onClick={() => {
                 setRoleName('');
+                setDescription('');
                 setError(null);
                 onClose();
               }}
               className="cursor-pointer"
+              disabled={isSaving}
             >
               {t('rbac.createRoleModal.cancel')}
             </Button>
-            <Button type="submit" className="cursor-pointer">
-              {t('rbac.createRoleModal.submit')}
+            <Button type="submit" className="cursor-pointer" disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 size-3.5 animate-spin" />
+                  Creating…
+                </>
+              ) : (
+                t('rbac.createRoleModal.submit')
+              )}
             </Button>
           </DialogFooter>
         </form>
