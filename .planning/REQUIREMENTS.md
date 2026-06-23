@@ -7,8 +7,8 @@
 
 ### Authentication & Sessions
 
-- [ ] **API-01**: User can log in with email and password via POST `/api/v1/auth/login` to retrieve JWT access token and user info, persisted in Zustand memory.
-- [ ] **API-02**: User session includes client IP checking. Frontend detects `401 Unauthorized` token failures (caused by token expiration or backend IP lock mismatch), clears the Zustand auth store, and redirects to the login screen with localized warnings.
+- [x] **API-01**: User can log in with email and password via POST `/api/v1/auth/login` to retrieve JWT access token and user info, persisted in Zustand memory.
+- [x] **API-02**: User session includes client IP checking. Frontend detects `401 Unauthorized` token failures (caused by token expiration or backend IP lock mismatch), clears the Zustand auth store, and redirects to the login screen with localized warnings.
 
 ### User Directory
 
@@ -46,8 +46,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| API-01 | Phase 9 | Pending |
-| API-02 | Phase 9 | Pending |
+| API-01 | Phase 9 | Complete |
+| API-02 | Phase 9 | Complete |
 | API-03 | Phase 10 | Pending |
 | API-04 | Phase 10 | Pending |
 | API-05 | Phase 11 | Pending |
@@ -58,6 +58,7 @@
 | API-10 | Phase 12 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 10 total
 - Mapped to phases: 10
 - Unmapped: 0 ✓

@@ -46,7 +46,7 @@
 
 ### Phase 9: Go Backend Auth Integration
 
-**Goal:** Connect credentials verification, session storage, and client IP checking to the Go backend API service.
+**Goal:** As a administrator, I want to log in using my credentials and have my session validated against my client IP, so that I can securely access the admin dashboard.
 **Mode:** mvp
 **Depends on:** Phase 8
 **Requirements:** [API-01, API-02]
@@ -137,7 +137,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Audit Logs Feed | v2.0 | 1/1 | Complete | 2026-06-23 |
 | 7. Login Layout & Branding Visuals | v2.1 | 1/1 | Complete | 2026-06-23 |
 | 8. Login Forms & Form Validation | v2.1 | 1/1 | Complete | 2026-06-23 |
-| 9. Go Backend Auth Integration | v3.0 | 2/2 | Complete   | 2026-06-23 |
+| 9. Go Backend Auth Integration | v3.0 | 2/2 | Complete    | 2026-06-23 |
 | 10. User Directory API & Assignments | v3.0 | 0/2 | Planned | — |
 | 11. Dynamic Access Policy Matrix | v3.0 | 0/3 | Planned | — |
 | 12. Real-Time Observability Audit logs | v3.0 | 0/3 | Planned | — |
