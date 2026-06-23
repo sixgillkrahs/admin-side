@@ -21,7 +21,7 @@ export function LoginScreen() {
     if (authError) {
       setAuthError(null);
     }
-  }, [email, password]);
+  }, [email, password, authError, setAuthError]);
 
   const toggleLanguage = () => {
     if (isLoading) return; // Disable language change during login loading
@@ -61,12 +61,13 @@ export function LoginScreen() {
         const response = await api.post('/api/v1/auth/login', { email, password });
         const { token, user } = response.data;
         setAuth(token, user);
-      } catch (err: any) {
-        if (err.response) {
-          if (err.response.status === 401) {
+      } catch (err) {
+        const error = err as { response?: { status?: number; data?: { error?: string } } };
+        if (error.response) {
+          if (error.response.status === 401) {
             setErrors({ api: t('auth.errorInvalidCredentials') });
           } else {
-            setErrors({ api: err.response.data?.error || t('auth.errorUnauthorized') });
+            setErrors({ api: error.response.data?.error || t('auth.errorUnauthorized') });
           }
         } else {
           setErrors({ api: t('auth.errorConnectionFailed') });
