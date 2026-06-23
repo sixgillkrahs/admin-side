@@ -8,6 +8,15 @@ An admin control panel frontend for the Business Chat application. It serves as 
 
 Enable secure, clear, and efficient administration of the platform, specifically focusing on user roles and permissions management (RBAC).
 
+## Current Milestone: v2.1 Login Screen & Authentication UI
+
+**Goal:** Build a premium split-screen login page with brand visuals, localized forms, basic validation, and redirection flow.
+
+**Target features:**
+- Premium split-screen layout with side brand illustration/graphic and interactive login form.
+- Full localization (English & Vietnamese translation support for all form fields, labels, and placeholders).
+- Basic form validation (email format, password length) and simulated redirect to the admin dashboard.
+
 ## Requirements
 
 ### Validated
@@ -25,7 +34,9 @@ Enable secure, clear, and efficient administration of the platform, specifically
 
 ### Active
 
-- [ ] (None yet — start a new milestone with /gsd-new-milestone)
+- [ ] Premium split-screen login layout with brand illustration/graphic and interactive login form
+- [ ] Full localization (English & Vietnamese translation support for all form fields, labels, and placeholders)
+- [ ] Basic form validation (email format, password length) and simulated redirect to the admin dashboard
 
 ### Out of Scope
 

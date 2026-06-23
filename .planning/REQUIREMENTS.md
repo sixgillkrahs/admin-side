@@ -1,0 +1,46 @@
+# Requirements: admin-side (Milestone v2.1)
+
+**Defined:** 2026-06-23
+**Core Value:** Build a premium split-screen login page with brand visuals, localized forms, basic validation, and redirection flow.
+
+## v1 Requirements
+
+### Authentication
+
+- [ ] **AUTH-01**: User can see a premium split-screen login page featuring a product brand illustration/graphic section and an interactive login form.
+- [ ] **AUTH-02**: User can view all labels, placeholders, input fields, and validation errors in English or Vietnamese dynamically when toggling the language switcher.
+- [ ] **AUTH-03**: User can input credentials (Email and Password) and see real-time format validation checks (e.g. valid email syntax, minimum password length).
+- [ ] **AUTH-04**: User can submit credentials and see a loading spinner state followed by a mock redirection to the admin dashboard upon successful form submission.
+
+## v2 Requirements
+
+### Authentication & Sessions
+
+- **AUTH-05**: Remember Me session persistence across browser refreshes.
+- **AUTH-06**: MFA (Multi-Factor Authentication) screen for enhanced security.
+- **AUTH-07**: Password recovery request UI flow.
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Go backend session validation | Handled by backend Go service. |
+| Actual database password storage | Handled by backend Go service database. |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| AUTH-01 | Phase 7 | Pending |
+| AUTH-02 | Phase 7 | Pending |
+| AUTH-03 | Phase 8 | Pending |
+| AUTH-04 | Phase 8 | Pending |
+
+**Coverage:**
+- v1 requirements: 4 total
+- Mapped to phases: 4
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-06-23*
+*Last updated: 2026-06-23 after initial definition*
