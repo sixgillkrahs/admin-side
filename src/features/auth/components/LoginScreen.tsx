@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShieldCheck, Laptop } from 'lucide-react';
+import { ShieldCheck, Laptop, Loader2 } from 'lucide-react';
 
 interface LoginScreenProps {
   onLoginSuccess: () => void;
@@ -10,16 +11,49 @@ interface LoginScreenProps {
 
 export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
   const { t, i18n } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleLanguage = () => {
+    if (isLoading) return; // Disable language change during login loading
     const nextLng = i18n.language === 'en' ? 'vi' : 'en';
     i18n.changeLanguage(nextLng);
     localStorage.setItem('i18nextLng', nextLng);
   };
 
+  const validateForm = () => {
+    const newErrors: { email?: string; password?: string } = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      newErrors.email = t('rbac.createRoleModal.errorEmpty'); // fallback or reuse empty msg
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = t('auth.errorInvalidEmail');
+    }
+
+    if (!password) {
+      newErrors.password = t('rbac.createRoleModal.errorEmpty');
+    } else if (password.length < 6) {
+      newErrors.password = t('auth.errorShortPassword');
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLoginSuccess();
+    if (isLoading) return;
+
+    if (validateForm()) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        onLoginSuccess();
+      }, 1500);
+    }
   };
 
   return (
@@ -75,7 +109,8 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold hover:bg-muted hover:text-foreground transition-all duration-200 cursor-pointer select-none bg-background shadow-sm"
+            disabled={isLoading}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold hover:bg-muted hover:text-foreground transition-all duration-200 cursor-pointer select-none bg-background shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Toggle language"
           >
             <span className={i18n.language === 'en' ? 'text-primary font-bold' : 'text-muted-foreground'}>EN</span>
@@ -107,31 +142,56 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email">{t('auth.emailLabel')}</Label>
+              <Label htmlFor="email" className={errors.email ? 'text-destructive' : ''}>
+                {t('auth.emailLabel')}
+              </Label>
               <Input
                 id="email"
-                type="email"
+                type="text"
                 placeholder={t('auth.emailPlaceholder')}
-                required
-                className="h-10"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+                className={`h-10 ${errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               />
+              {errors.email && (
+                <span className="text-xs text-destructive font-medium mt-0.5">{errors.email}</span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex justify-between items-center">
-                <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
+                <Label htmlFor="password" className={errors.password ? 'text-destructive' : ''}>
+                  {t('auth.passwordLabel')}
+                </Label>
               </div>
               <Input
                 id="password"
                 type="password"
                 placeholder={t('auth.passwordPlaceholder')}
-                required
-                className="h-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                className={`h-10 ${errors.password ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               />
+              {errors.password && (
+                <span className="text-xs text-destructive font-medium mt-0.5">{errors.password}</span>
+              )}
             </div>
 
-            <Button type="submit" className="h-10 w-full font-semibold cursor-pointer shadow-md mt-2 transition-all hover:shadow-lg">
-              {t('auth.submitButton')}
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="h-10 w-full font-semibold cursor-pointer shadow-md mt-2 transition-all hover:shadow-lg disabled:opacity-80 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin size-4 mr-2" />
+                  {t('auth.loadingText')}
+                </>
+              ) : (
+                t('auth.submitButton')
+              )}
             </Button>
           </form>
         </div>

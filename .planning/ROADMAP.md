@@ -30,7 +30,7 @@
 ### 🚧 v2.1 Login Screen & Authentication UI (In Progress / Planned)
 
 - [x] **Phase 7: Login Layout & Branding Visuals** - Build responsive split-screen wrapper with product branding graphic and localized basic fields. (completed 2026-06-23)
-- [ ] **Phase 8: Login Forms & Form Validation** - Implement active form validation, loading states, and redirect routing handler.
+- [x] **Phase 8: Login Forms & Form Validation** - Implement active form validation, loading states, and redirect routing handler. (completed 2026-06-23)
 
 ## Phase Details
 
@@ -62,7 +62,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 08-01: Build credentials inputs validation, submit loading state, and redirect routing handler (AUTH-03, AUTH-04).
+- [x] 08-01: Build credentials inputs validation, submit loading state, and redirect routing handler (AUTH-03, AUTH-04).
 
 ## Progress
 
@@ -77,7 +77,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. Custom Role Creator | v2.0 | 1/1 | Complete | 2026-06-23 |
 | 6. Audit Logs Feed | v2.0 | 1/1 | Complete | 2026-06-23 |
 | 7. Login Layout & Branding Visuals | v2.1 | 1/1 | Complete | 2026-06-23 |
-| 8. Login Forms & Form Validation | v2.1 | 0/1 | Planned | - |
+| 8. Login Forms & Form Validation | v2.1 | 1/1 | Complete | 2026-06-23 |
 
 ---
 *Roadmap updated: 2026-06-23 after v2.1 milestone initialization*
