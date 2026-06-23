@@ -1,4 +1,4 @@
-export type Role = 'Admin' | 'Moderator' | 'User';
+export type Role = string;
 
 export type Status = 'active' | 'inactive';
 

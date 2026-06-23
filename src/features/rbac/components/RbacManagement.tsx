@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Plus } from 'lucide-react';
 import type { User, Role } from '../types';
 import { UserDirectory } from './UserDirectory';
 import { PermissionMatrix } from './PermissionMatrix';
 import { EditRoleModal } from './EditRoleModal';
+import { CreateRoleModal } from './CreateRoleModal';
 
 const MOCK_USERS: User[] = [
   { id: '1', name: 'Alice Nguyen', email: 'alice@businesschat.com', role: 'Admin', status: 'active', joinedDate: '2026-01-10' },
@@ -18,6 +20,14 @@ export function RbacManagement() {
   const [users, setUsers] = useState<User[]>(MOCK_USERS);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const [roles, setRoles] = useState<string[]>(['Admin', 'Moderator', 'User']);
+  const [rolePermissions, setRolePermissions] = useState<Record<string, Record<string, boolean>>>({
+    Admin: { 'read:messages': true, 'write:messages': true, 'manage:roles': true, 'admin:all': true },
+    Moderator: { 'read:messages': true, 'write:messages': true, 'manage:roles': false, 'admin:all': false },
+    User: { 'read:messages': true, 'write:messages': false, 'manage:roles': false, 'admin:all': false }
+  });
 
   const handleEditRole = (user: User) => {
     setSelectedUser(user);
@@ -32,11 +42,28 @@ export function RbacManagement() {
     );
   };
 
+  const handleCreateRole = (roleName: string, permissions: Record<string, boolean>) => {
+    setRoles((prev) => [...prev, roleName]);
+    setRolePermissions((prev) => ({
+      ...prev,
+      [roleName]: permissions,
+    }));
+  };
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('rbac.title')}</h1>
-        <p className="text-muted-foreground mt-1">{t('rbac.description')}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('rbac.title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('rbac.description')}</p>
+        </div>
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer"
+        >
+          <Plus className="mr-2 size-4" />
+          {t('rbac.createRoleBtn')}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 gap-8">
@@ -47,7 +74,7 @@ export function RbacManagement() {
 
         {/* Permission Matrix */}
         <div className="pt-4 border-t border-border">
-          <PermissionMatrix />
+          <PermissionMatrix roles={roles} rolePermissions={rolePermissions} />
         </div>
       </div>
 
@@ -58,9 +85,18 @@ export function RbacManagement() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           user={selectedUser}
+          roles={roles}
           onSave={handleSaveRole}
         />
       )}
+
+      {/* Create Custom Role Modal */}
+      <CreateRoleModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        existingRoles={roles}
+        onSave={handleCreateRole}
+      />
     </div>
   );
 }

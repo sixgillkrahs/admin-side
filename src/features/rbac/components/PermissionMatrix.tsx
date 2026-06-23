@@ -1,39 +1,32 @@
 import { Check, Minus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { Role } from '../types';
 
-interface PermissionRow {
-  permission: string;
-  descriptionKey: string;
-  claims: Record<Role, boolean>;
+interface PermissionMatrixProps {
+  roles: string[];
+  rolePermissions: Record<string, Record<string, boolean>>;
 }
 
-const PERMISSION_ROWS: PermissionRow[] = [
+const PERMISSION_ROWS = [
   {
     permission: 'read:messages',
     descriptionKey: 'rbac.matrix.readMessages',
-    claims: { Admin: true, Moderator: true, User: true },
   },
   {
     permission: 'write:messages',
     descriptionKey: 'rbac.matrix.writeMessages',
-    claims: { Admin: true, Moderator: true, User: false },
   },
   {
     permission: 'manage:roles',
     descriptionKey: 'rbac.matrix.manageRoles',
-    claims: { Admin: true, Moderator: false, User: false },
   },
   {
     permission: 'admin:all',
     descriptionKey: 'rbac.matrix.adminAll',
-    claims: { Admin: true, Moderator: false, User: false },
   },
 ];
 
-export function PermissionMatrix() {
+export function PermissionMatrix({ roles, rolePermissions }: PermissionMatrixProps) {
   const { t } = useTranslation();
-  const roles: Role[] = ['Admin', 'Moderator', 'User'];
 
   return (
     <div className="space-y-4">
@@ -69,7 +62,7 @@ export function PermissionMatrix() {
                     </div>
                   </td>
                   {roles.map((role) => {
-                    const hasAccess = row.claims[role];
+                    const hasAccess = rolePermissions[role]?.[row.permission] ?? false;
                     return (
                       <td key={role} className="px-6 py-4 text-center">
                         <div className="inline-flex items-center justify-center">

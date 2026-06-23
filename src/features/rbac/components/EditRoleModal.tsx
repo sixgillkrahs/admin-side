@@ -8,10 +8,11 @@ interface EditRoleModalProps {
   isOpen: boolean;
   onClose: () => void;
   user: User;
+  roles: string[];
   onSave: (userId: string, newRole: Role) => void;
 }
 
-export function EditRoleModal({ isOpen, onClose, user, onSave }: EditRoleModalProps) {
+export function EditRoleModal({ isOpen, onClose, user, roles, onSave }: EditRoleModalProps) {
   const { t } = useTranslation();
   const [selectedRole, setSelectedRole] = useState<Role>(user.role);
 
@@ -73,9 +74,13 @@ export function EditRoleModal({ isOpen, onClose, user, onSave }: EditRoleModalPr
                 onChange={(e) => setSelectedRole(e.target.value as Role)}
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors cursor-pointer"
               >
-                <option value="User">{t('rbac.modal.options.user')}</option>
-                <option value="Moderator">{t('rbac.modal.options.moderator')}</option>
-                <option value="Admin">{t('rbac.modal.options.admin')}</option>
+                {roles.map((role) => (
+                  <option key={role} value={role}>
+                    {role === 'User' || role === 'Moderator' || role === 'Admin'
+                      ? t(`rbac.modal.options.${role.toLowerCase()}`)
+                      : role}
+                  </option>
+                ))}
               </select>
             </div>
 
