@@ -1,4 +1,5 @@
 import { Menu, Bell } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   activeTab: string;
@@ -6,15 +7,23 @@ interface HeaderProps {
 }
 
 export function Header({ activeTab, setSidebarOpen }: HeaderProps) {
+  const { t, i18n } = useTranslation();
+
   const getTitle = () => {
     switch (activeTab) {
       case 'dashboard':
-        return 'Dashboard Overview';
+        return t('dashboard.title');
       case 'rbac':
-        return 'Role-Based Access Control';
+        return t('rbac.title');
       default:
-        return 'Admin Panel';
+        return t('sidebar.adminConsole');
     }
+  };
+
+  const toggleLanguage = () => {
+    const nextLng = i18n.language === 'en' ? 'vi' : 'en';
+    i18n.changeLanguage(nextLng);
+    localStorage.setItem('i18nextLng', nextLng);
   };
 
   return (
@@ -40,6 +49,18 @@ export function Header({ activeTab, setSidebarOpen }: HeaderProps) {
 
       {/* Header Actions */}
       <div className="flex items-center gap-3">
+        {/* Language Switcher */}
+        <button
+          type="button"
+          onClick={toggleLanguage}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold hover:bg-muted hover:text-foreground transition-all duration-200 cursor-pointer select-none bg-background shadow-sm"
+          aria-label="Toggle language"
+        >
+          <span className={i18n.language === 'en' ? 'text-primary font-bold' : 'text-muted-foreground'}>EN</span>
+          <span className="text-muted-foreground/30">|</span>
+          <span className={i18n.language === 'vi' ? 'text-primary font-bold' : 'text-muted-foreground'}>VI</span>
+        </button>
+
         <button
           type="button"
           className="rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"

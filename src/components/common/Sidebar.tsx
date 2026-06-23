@@ -1,4 +1,5 @@
 import { LayoutDashboard, ShieldCheck, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
@@ -9,9 +10,11 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }: SidebarProps) {
+  const { t } = useTranslation();
+
   const menuItems = [
-    { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
-    { id: 'rbac', name: 'RBAC Access', icon: ShieldCheck },
+    { id: 'dashboard', name: t('sidebar.dashboard'), icon: LayoutDashboard },
+    { id: 'rbac', name: t('sidebar.rbacAccess'), icon: ShieldCheck },
   ];
 
   return (
@@ -39,7 +42,7 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }: SidebarP
             </div>
             <div>
               <h2 className="text-sm font-semibold tracking-tight text-foreground">Business Chat</h2>
-              <span className="text-xs text-muted-foreground">Admin Console</span>
+              <span className="text-xs text-muted-foreground">{t('sidebar.adminConsole')}</span>
             </div>
           </div>
           <button

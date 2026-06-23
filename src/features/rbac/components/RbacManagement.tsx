@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { User, Role } from '../types';
 import { UserDirectory } from './UserDirectory';
 import { PermissionMatrix } from './PermissionMatrix';
@@ -13,6 +14,7 @@ const MOCK_USERS: User[] = [
 ];
 
 export function RbacManagement() {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<User[]>(MOCK_USERS);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,8 +35,8 @@ export function RbacManagement() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">RBAC Management</h1>
-        <p className="text-muted-foreground mt-1">Manage user roles, access control claims, and system permissions.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('rbac.title')}</h1>
+        <p className="text-muted-foreground mt-1">{t('rbac.description')}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-8">
@@ -49,7 +51,7 @@ export function RbacManagement() {
         </div>
       </div>
 
-      {/* Edit Role Modal (Recreated per user selection) */}
+      {/* Edit Role Modal */}
       {selectedUser && (
         <EditRoleModal
           key={selectedUser.id}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Search, Edit } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { User } from '../types';
 
 interface UserDirectoryProps {
@@ -8,6 +9,7 @@ interface UserDirectoryProps {
 }
 
 export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter users based on query
@@ -46,9 +48,11 @@ export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
       {/* Header and Search Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-foreground tracking-tight">User Directory</h2>
+          <h2 className="text-xl font-semibold text-foreground tracking-tight">
+            {t('rbac.directory.title')}
+          </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Overview of registered team members and their active roles.
+            {t('rbac.directory.description')}
           </p>
         </div>
         <div className="relative w-full sm:w-72">
@@ -57,7 +61,7 @@ export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
           </span>
           <input
             type="text"
-            placeholder="Search by name or email..."
+            placeholder={t('rbac.directory.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
@@ -71,12 +75,12 @@ export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-muted-foreground text-xs font-semibold uppercase tracking-wider select-none">
-                <th className="px-6 py-4">User</th>
-                <th className="px-6 py-4">Email</th>
-                <th className="px-6 py-4">Role</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Joined Date</th>
-                <th className="px-6 py-4 text-right">Actions</th>
+                <th className="px-6 py-4">{t('rbac.directory.columns.user')}</th>
+                <th className="px-6 py-4">{t('rbac.directory.columns.email')}</th>
+                <th className="px-6 py-4">{t('rbac.directory.columns.role')}</th>
+                <th className="px-6 py-4">{t('rbac.directory.columns.status')}</th>
+                <th className="px-6 py-4">{t('rbac.directory.columns.joinedDate')}</th>
+                <th className="px-6 py-4 text-right">{t('rbac.directory.columns.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border text-sm">
@@ -112,10 +116,10 @@ export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
                       <button
                         onClick={() => onEditRole(user)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-foreground hover:bg-muted/80 transition-colors cursor-pointer"
-                        title="Edit User Role"
+                        title={t('rbac.directory.actions.editRole')}
                       >
                         <Edit className="size-3.5" />
-                        <span>Edit Role</span>
+                        <span>{t('rbac.directory.actions.editRole')}</span>
                       </button>
                     </td>
                   </tr>
@@ -124,9 +128,11 @@ export function UserDirectory({ users, onEditRole }: UserDirectoryProps) {
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="max-w-md mx-auto space-y-2">
-                      <h4 className="text-base font-semibold text-foreground">No users found</h4>
+                      <h4 className="text-base font-semibold text-foreground">
+                        {t('rbac.directory.emptyState.title')}
+                      </h4>
                       <p className="text-xs text-muted-foreground">
-                        Try adjusting your search query or role filter.
+                        {t('rbac.directory.emptyState.description')}
                       </p>
                     </div>
                   </td>

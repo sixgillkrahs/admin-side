@@ -1,44 +1,48 @@
 import { Check, Minus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Role } from '../types';
 
 interface PermissionRow {
   permission: string;
-  description: string;
+  descriptionKey: string;
   claims: Record<Role, boolean>;
 }
 
 const PERMISSION_ROWS: PermissionRow[] = [
   {
     permission: 'read:messages',
-    description: 'Allows reading conversation threads and message logs.',
+    descriptionKey: 'rbac.matrix.readMessages',
     claims: { Admin: true, Moderator: true, User: true },
   },
   {
     permission: 'write:messages',
-    description: 'Allows sending messages and creating new chat channels.',
+    descriptionKey: 'rbac.matrix.writeMessages',
     claims: { Admin: true, Moderator: true, User: false },
   },
   {
     permission: 'manage:roles',
-    description: 'Allows assigning roles and modifying permission matrices.',
+    descriptionKey: 'rbac.matrix.manageRoles',
     claims: { Admin: true, Moderator: false, User: false },
   },
   {
     permission: 'admin:all',
-    description: 'Full administrative override capability across all systems.',
+    descriptionKey: 'rbac.matrix.adminAll',
     claims: { Admin: true, Moderator: false, User: false },
   },
 ];
 
 export function PermissionMatrix() {
+  const { t } = useTranslation();
   const roles: Role[] = ['Admin', 'Moderator', 'User'];
 
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-semibold text-foreground tracking-tight">Role Permission Matrix</h2>
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">
+          {t('rbac.matrix.title')}
+        </h2>
         <p className="text-xs text-muted-foreground mt-0.5">
-          Access control matrix displaying authorized capability claims by role.
+          {t('rbac.matrix.description')}
         </p>
       </div>
 
@@ -47,7 +51,7 @@ export function PermissionMatrix() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-muted-foreground text-xs font-semibold uppercase tracking-wider select-none">
-                <th className="px-6 py-4 max-w-xs">Capability Claim</th>
+                <th className="px-6 py-4 max-w-xs">{t('rbac.matrix.claimHeader')}</th>
                 {roles.map((role) => (
                   <th key={role} className="px-6 py-4 text-center">
                     {role}
@@ -60,7 +64,9 @@ export function PermissionMatrix() {
                 <tr key={row.permission} className="hover:bg-muted/10 transition-colors">
                   <td className="px-6 py-4">
                     <div className="font-semibold text-foreground">{row.permission}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{row.description}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {t(row.descriptionKey)}
+                    </div>
                   </td>
                   {roles.map((role) => {
                     const hasAccess = row.claims[role];
