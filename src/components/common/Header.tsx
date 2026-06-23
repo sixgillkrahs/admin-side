@@ -1,12 +1,12 @@
-import { Menu, Bell } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 interface HeaderProps {
   activeTab: string;
-  setSidebarOpen: (open: boolean) => void;
 }
 
-export function Header({ activeTab, setSidebarOpen }: HeaderProps) {
+export function Header({ activeTab }: HeaderProps) {
   const { t, i18n } = useTranslation();
 
   const getTitle = () => {
@@ -29,15 +29,8 @@ export function Header({ activeTab, setSidebarOpen }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-6 shadow-sm">
       <div className="flex items-center gap-4">
-        {/* Mobile Sidebar Menu Toggle */}
-        <button
-          type="button"
-          className="rounded-lg p-2 hover:bg-muted md:hidden"
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Open sidebar"
-        >
-          <Menu className="size-5 text-foreground" />
-        </button>
+        {/* Shadcn Sidebar Toggle Trigger */}
+        <SidebarTrigger />
 
         {/* Dynamic Title / Breadcrumb */}
         <div className="flex items-center gap-2">
