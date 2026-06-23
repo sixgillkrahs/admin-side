@@ -12,11 +12,11 @@
 
 ### Dashboard Vitals
 
-- [ ] **DASH-01**: Render Overview KPI summary cards displaying Total Users, Active Roles, Active Sessions, and API Traffic.
+- [x] **DASH-01**: Render Overview KPI summary cards displaying Total Users, Active Roles, Active Sessions, and API Traffic.
 
 ### Internationalization (i18n)
 
-- [ ] **I18N-01**: Implement multi-language support (English and Vietnamese) for all text resources, UI strings, and navigation layouts, including a language toggle switch in the Header.
+- [x] **I18N-01**: Implement multi-language support (English and Vietnamese) for all text resources, UI strings, and navigation layouts, including a language toggle switch in the Header.
 
 ### RBAC Access Management
 
@@ -51,8 +51,8 @@
 |-------------|-------|--------|
 | STRUCT-01 | Phase 1 | Complete |
 | STRUCT-02 | Phase 1 | Complete |
-| DASH-01 | Phase 3 | Pending |
-| I18N-01 | Phase 3 | Pending |
+| DASH-01 | Phase 3 | Complete |
+| I18N-01 | Phase 3 | Complete |
 | RBAC-01 | Phase 2 | Complete |
 | RBAC-02 | Phase 2 | Complete |
 | RBAC-03 | Phase 2 | Complete |
