@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Layout } from '@/components/common/Layout';
 import { DashboardOverview } from '@/features/dashboard';
 import { RbacManagement } from '@/features/rbac';
+import { LoginScreen } from '@/features/auth';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const renderContent = () => {
@@ -16,6 +18,10 @@ function App() {
         return <DashboardOverview />;
     }
   };
+
+  if (!isLoggedIn) {
+    return <LoginScreen onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <Layout activeTab={activeTab} setActiveTab={setActiveTab}>

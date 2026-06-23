@@ -7,8 +7,8 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can see a premium split-screen login page featuring a product brand illustration/graphic section and an interactive login form.
-- [ ] **AUTH-02**: User can view all labels, placeholders, input fields, and validation errors in English or Vietnamese dynamically when toggling the language switcher.
+- [x] **AUTH-01**: User can see a premium split-screen login page featuring a product brand illustration/graphic section and an interactive login form.
+- [x] **AUTH-02**: User can view all labels, placeholders, input fields, and validation errors in English or Vietnamese dynamically when toggling the language switcher.
 - [ ] **AUTH-03**: User can input credentials (Email and Password) and see real-time format validation checks (e.g. valid email syntax, minimum password length).
 - [ ] **AUTH-04**: User can submit credentials and see a loading spinner state followed by a mock redirection to the admin dashboard upon successful form submission.
 
@@ -31,8 +31,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 7 | Pending |
-| AUTH-02 | Phase 7 | Pending |
+| AUTH-01 | Phase 7 | Completed |
+| AUTH-02 | Phase 7 | Completed |
 | AUTH-03 | Phase 8 | Pending |
 | AUTH-04 | Phase 8 | Pending |
 
@@ -43,4 +43,4 @@
 
 ---
 *Requirements defined: 2026-06-23*
-*Last updated: 2026-06-23 after initial definition*
+*Last updated: 2026-06-23 after Phase 7 completion*
