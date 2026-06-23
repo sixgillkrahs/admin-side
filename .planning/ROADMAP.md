@@ -1,91 +1,62 @@
-# Roadmap: admin-side
+# Roadmap: admin-side (Milestone v2.0)
 
 ## Overview
 
-Roadmap for building the admin control panel. We will construct the application using a vertical MVP approach, delivering functional pieces slice-by-slice, starting from directory skeletons and layouts, moving to core access controls (RBAC), and concluding with visual dashboard metrics.
+Roadmap for milestone v2.0, focusing on data visualization, custom role management, and audit trailing.
 
 ## Phases
 
-- [x] **Phase 1: Layout & Foundation** - Initialize feature directories and render the navigation shell. (completed 2026-06-22)
-- [x] **Phase 2: User Directory & RBAC Integration** - Build user directory tables and role mapping utilities. (completed 2026-06-22)
-- [x] **Phase 3: Dashboard Vitals** - Implement overview statistics cards and system summary grids. (completed 2026-06-23)
+- [ ] **Phase 1: Interactive Dashboard Graphs** - Build Recharts graphs displaying platform traffic trends.
+- [ ] **Phase 2: Custom Role Creator** - Implement a policy editor form to register custom user roles.
+- [ ] **Phase 3: Audit Logs Feed** - Build a real-time websocket feed list displaying admin operations.
 
 ## Phase Details
 
-### Phase 1: Layout & Foundation
+### Phase 1: Interactive Dashboard Graphs
 
-**Goal:** Initialize feature directories and render the navigation shell.
+**Goal:** Build Recharts graphs displaying platform traffic trends.
 **Mode:** mvp
-**Depends on:** Nothing (first phase)
-**Requirements:** [STRUCT-01, STRUCT-02]
+**Depends on:** Nothing (first phase of v2.0)
+**Requirements:** [DASH-02]
 **Success Criteria** (what must be TRUE):
+  1. An interactive line/bar chart displaying daily API traffic trends is rendered inside `DashboardOverview.tsx`.
+  2. The chart uses mock data and transitions smoothly during language changes.
 
-  1. Directory structure matching feature-based rules created inside `src/features/`.
-  2. Sidebar navigation shell rendered on screen inside common layout (`src/components/common/Sidebar.tsx`).
-
-**Plans:** 2/2 plans complete
+**Plans:** 1 plan
 
 Plans:
-**Wave 1**
+- [ ] 01-01: Install Recharts library and build interactive traffic graphs (DASH-02).
 
-- [x] 01-01: Initialize feature base directories and `src/components/common` folder.
+### Phase 2: Custom Role Creator
 
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 01-02: Build common Sidebar layout and wire it into the root component.
-
-### Phase 2: User Directory & RBAC Integration
-
-**Goal:** Implement user and role tables, role assignment modal.
+**Goal:** Implement a policy editor form to register custom user roles.
 **Mode:** mvp
 **Depends on:** Phase 1
-**Requirements:** [RBAC-01, RBAC-02, RBAC-03]
+**Requirements:** [RBAC-04]
 **Success Criteria** (what must be TRUE):
+  1. A "Create Custom Role" button opens a form screen/modal.
+  2. Form allows entering a role name and checking/unchecking specific system permissions.
+  3. Clicking save adds the custom role into the matrix list dynamically.
 
-  1. User directory table rendered on screen showing mock users with search functionality.
-  2. Role & Permission matrix component rendered showing mapped access rules.
-  3. User role assignment modal opens, updates selected user's role badge, and closes.
-
-**Plans:** 0/3 plans complete
+**Plans:** 1 plan
 
 Plans:
-**Wave 1**
+- [ ] 02-01: Build Custom Role Creator form and permissions editor (RBAC-04).
 
-- [ ] 02-01: Implement User Directory table (RBAC-01).
+### Phase 3: Audit Logs Feed
 
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 02-02: Implement Role & Permission Matrix (RBAC-02).
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 02-03: Implement User Role Assignment modal form (RBAC-03).
-
-### Phase 3: Dashboard Vitals
-
-**Goal:** Build overview metrics cards and server status dashboard widgets.
+**Goal:** Build a real-time websocket feed list displaying admin operations.
 **Mode:** mvp
 **Depends on:** Phase 2
-**Requirements:** [DASH-01, I18N-01]
+**Requirements:** [AUDIT-01]
 **Success Criteria** (what must be TRUE):
+  1. An Audit Logs panel displays a chronological list of administrative actions (e.g. "User Alice changed role of Bob to Moderator").
+  2. Feeds are dynamically updated with a simulated real-time stream.
 
-  1. Dashboard summary cards displaying Total Users, Active Roles, Active Sessions, and API Traffic render on screen.
-  2. The application supports toggling language between English and Vietnamese, dynamically translating all labels, badges, headers, and description texts.
-
-**Plans:** 0/3 plans complete
+**Plans:** 1 plan
 
 Plans:
-**Wave 1**
-
-- [ ] 03-01: Set up core i18n system, Header language switcher, and translate layouts (I18N-01).
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 03-02: Implement Dashboard overview metrics cards with i18n support (DASH-01, I18N-01).
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 03-03: Refactor RBAC Access Management screens for i18n support (I18N-01).
+- [ ] 03-01: Build Audit Logs feed widget with simulated real-time stream (AUDIT-01).
 
 ## Progress
 
@@ -93,10 +64,10 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1 | 2/2 | Complete    | 2026-06-22 |
-| 2 | 0/3 | Complete    | 2026-06-22 |
-| 3 | 0/3 | Complete    | 2026-06-23 |
+| 1 | 0/1 | Not started | - |
+| 2 | 0/1 | Not started | - |
+| 3 | 0/1 | Not started | - |
 
 ---
-*Roadmap defined: 2026-06-22*
-*Last updated: 2026-06-22 after initialization*
+*Roadmap defined: 2026-06-23*
+*Last updated: 2026-06-23*
