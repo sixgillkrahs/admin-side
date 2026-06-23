@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,19 +12,52 @@ import { api } from '@/lib/api';
 
 export function LoginScreen() {
   const { t, i18n } = useTranslation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string; api?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const { setAuth, authError, setAuthError } = useAuthStore();
 
-  // Clear previous session errors when editing fields
+  const schema = useMemo(() => {
+    return z.object({
+      email: z
+        .string()
+        .min(1, { message: t('rbac.createRoleModal.errorEmpty') })
+        .email({ message: t('auth.errorInvalidEmail') }),
+      password: z
+        .string()
+        .min(1, { message: t('rbac.createRoleModal.errorEmpty') })
+        .min(6, { message: t('auth.errorShortPassword') }),
+    });
+  }, [t]);
+
+  type LoginFormValues = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors },
+    watch,
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  // Clear previous session/api errors when editing fields
   useEffect(() => {
-    if (authError) {
-      setAuthError(null);
-    }
-  }, [email, password, authError, setAuthError]);
+    // eslint-disable-next-line react-hooks/incompatible-library
+    const subscription = watch(() => {
+      if (authError) {
+        setAuthError(null);
+      }
+      if (apiError) {
+        setApiError(null);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, authError, setAuthError, apiError]);
 
   const toggleLanguage = () => {
     if (isLoading) return; // Disable language change during login loading
@@ -30,51 +66,31 @@ export function LoginScreen() {
     localStorage.setItem('i18nextLng', nextLng);
   };
 
-  const validateForm = () => {
-    const newErrors: { email?: string; password?: string } = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email) {
-      newErrors.email = t('rbac.createRoleModal.errorEmpty'); // fallback or reuse empty msg
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = t('auth.errorInvalidEmail');
-    }
-
-    if (!password) {
-      newErrors.password = t('rbac.createRoleModal.errorEmpty');
-    } else if (password.length < 6) {
-      newErrors.password = t('auth.errorShortPassword');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: LoginFormValues) => {
     if (isLoading) return;
 
-    if (validateForm()) {
-      setIsLoading(true);
-      setErrors({});
-      try {
-        const response = await api.post('/api/v1/auth/login', { email, password });
-        const { token, user } = response.data;
-        setAuth(token, user);
-      } catch (err) {
-        const error = err as { response?: { status?: number; data?: { error?: string } } };
-        if (error.response) {
-          if (error.response.status === 401) {
-            setErrors({ api: t('auth.errorInvalidCredentials') });
-          } else {
-            setErrors({ api: error.response.data?.error || t('auth.errorUnauthorized') });
-          }
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      const response = await api.post('/api/v1/auth/login', {
+        email: data.email,
+        password: data.password,
+      });
+      const { token, user } = response.data;
+      setAuth(token, user);
+    } catch (err) {
+      const error = err as { response?: { status?: number; data?: { error?: string } } };
+      if (error.response) {
+        if (error.response.status === 401) {
+          setApiError(t('auth.errorInvalidCredentials'));
         } else {
-          setErrors({ api: t('auth.errorConnectionFailed') });
+          setApiError(error.response.data?.error || t('auth.errorUnauthorized'));
         }
-      } finally {
-        setIsLoading(false);
+      } else {
+        setApiError(t('auth.errorConnectionFailed'));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -172,34 +188,33 @@ export function LoginScreen() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {(warningMsg || errors.api) && (
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            {(warningMsg || apiError) && (
               <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
                 <AlertCircle className="size-4 shrink-0" />
-                <span>{warningMsg || errors.api}</span>
+                <span>{warningMsg || apiError}</span>
               </div>
             )}
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email" className={errors.email ? 'text-destructive' : ''}>
+              <Label htmlFor="email" className={formErrors.email ? 'text-destructive' : ''}>
                 {t('auth.emailLabel')}
               </Label>
               <Input
                 id="email"
                 type="text"
                 placeholder={t('auth.emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className={`h-10 ${errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                className={`h-10 ${formErrors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                {...register('email')}
               />
-              {errors.email && (
-                <span className="text-xs text-destructive font-medium mt-0.5">{errors.email}</span>
+              {formErrors.email && (
+                <span className="text-xs text-destructive font-medium mt-0.5">{formErrors.email.message}</span>
               )}
             </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex justify-between items-center">
-                <Label htmlFor="password" className={errors.password ? 'text-destructive' : ''}>
+                <Label htmlFor="password" className={formErrors.password ? 'text-destructive' : ''}>
                   {t('auth.passwordLabel')}
                 </Label>
               </div>
@@ -207,13 +222,12 @@ export function LoginScreen() {
                 id="password"
                 type="password"
                 placeholder={t('auth.passwordPlaceholder')}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
-                className={`h-10 ${errors.password ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                className={`h-10 ${formErrors.password ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                {...register('password')}
               />
-              {errors.password && (
-                <span className="text-xs text-destructive font-medium mt-0.5">{errors.password}</span>
+              {formErrors.password && (
+                <span className="text-xs text-destructive font-medium mt-0.5">{formErrors.password.message}</span>
               )}
             </div>
 
