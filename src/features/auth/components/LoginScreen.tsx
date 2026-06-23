@@ -1,20 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShieldCheck, Laptop, Loader2 } from 'lucide-react';
+import { ShieldCheck, Laptop, Loader2, AlertCircle } from 'lucide-react';
+import { useAuthStore } from '../store/useAuthStore';
+import { api } from '@/lib/api';
 
-interface LoginScreenProps {
-  onLoginSuccess: () => void;
-}
-
-export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
+export function LoginScreen() {
   const { t, i18n } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; api?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const { setAuth, authError, setAuthError } = useAuthStore();
+
+  // Clear previous session errors when editing fields
+  useEffect(() => {
+    if (authError) {
+      setAuthError(null);
+    }
+  }, [email, password]);
 
   const toggleLanguage = () => {
     if (isLoading) return; // Disable language change during login loading
@@ -43,18 +50,42 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLoading) return;
 
     if (validateForm()) {
       setIsLoading(true);
-      setTimeout(() => {
+      setErrors({});
+      try {
+        const response = await api.post('/api/v1/auth/login', { email, password });
+        const { token, user } = response.data;
+        setAuth(token, user);
+      } catch (err: any) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            setErrors({ api: t('auth.errorInvalidCredentials') });
+          } else {
+            setErrors({ api: err.response.data?.error || t('auth.errorUnauthorized') });
+          }
+        } else {
+          setErrors({ api: t('auth.errorConnectionFailed') });
+        }
+      } finally {
         setIsLoading(false);
-        onLoginSuccess();
-      }, 1500);
+      }
     }
   };
+
+  // Maps Zustand state errors to localized error text
+  const getSessionWarning = () => {
+    if (authError === 'IP_MISMATCH') return t('auth.errorIpMismatch');
+    if (authError === 'SESSION_EXPIRED') return t('auth.errorSessionExpired');
+    if (authError === 'UNAUTHORIZED') return t('auth.errorUnauthorized');
+    return null;
+  };
+
+  const warningMsg = getSessionWarning();
 
   return (
     <div className="relative min-h-screen w-full flex bg-background text-foreground overflow-hidden">
@@ -141,6 +172,12 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {(warningMsg || errors.api) && (
+              <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <AlertCircle className="size-4 shrink-0" />
+                <span>{warningMsg || errors.api}</span>
+              </div>
+            )}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="email" className={errors.email ? 'text-destructive' : ''}>
                 {t('auth.emailLabel')}
