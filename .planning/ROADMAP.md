@@ -66,16 +66,26 @@ Plans:
 **Goal:** Build overview metrics cards and server status dashboard widgets.
 **Mode:** mvp
 **Depends on:** Phase 2
-**Requirements:** [DASH-01]
+**Requirements:** [DASH-01, I18N-01]
 **Success Criteria** (what must be TRUE):
 
   1. Dashboard summary cards displaying Total Users, Active Roles, Active Sessions, and API Traffic render on screen.
+  2. The application supports toggling language between English and Vietnamese, dynamically translating all labels, badges, headers, and description texts.
 
-**Plans:** 1 plan
+**Plans:** 3 plans
 
 Plans:
+**Wave 1**
 
-- [ ] 03-01: Build Dashboard overview metrics cards (DASH-01).
+- [ ] 03-01: Set up core i18n system, Header language switcher, and translate layouts (I18N-01).
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03-02: Implement Dashboard overview metrics cards with i18n support (DASH-01, I18N-01).
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 03-03: Refactor RBAC Access Management screens for i18n support (I18N-01).
 
 ## Progress
 
@@ -85,7 +95,7 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1 | 2/2 | Complete    | 2026-06-22 |
 | 2 | 0/3 | Complete    | 2026-06-22 |
-| 3 | 0/1 | Not started | - |
+| 3 | 0/3 | Not started | - |
 
 ---
 *Roadmap defined: 2026-06-22*

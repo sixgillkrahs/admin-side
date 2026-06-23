@@ -26,6 +26,11 @@ This phase delivers the dashboard vitals page, replacing the empty placeholder o
   - API Traffic: `Zap` (orange/amber themed)
 - **D-03:** Each card will utilize rich modern aesthetics, including subtle hover scales, color-accented icon backgrounds, and light-reflecting glass border states to feel premium.
 
+### Internationalization & Multi-language Support (I18N-01)
+- **D-04:** Employs standard industry libraries `i18next` and `react-i18next` to implement internationalization support.
+- **D-05:** Consolidates translation dictionaries for English (`en`) and Vietnamese (`vi`) in `src/lib/i18n.ts` for all interface text elements.
+- **D-06:** Renders a language switch control (a button toggle or dropdown) in the navigation `Header.tsx` that changes the active language reactively. The selected language is stored in `localStorage` for session persistence.
+
 </decisions>
 
 <canonical_refs>
