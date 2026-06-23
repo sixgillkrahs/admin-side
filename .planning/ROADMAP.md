@@ -1,73 +1,41 @@
-# Roadmap: admin-side (Milestone v2.0)
+# Roadmap: admin-side
 
-## Overview
+## Milestones
 
-Roadmap for milestone v2.0, focusing on data visualization, custom role management, and audit trailing.
+- ✅ **v1.0 Layout & Access Control Foundation** — Phases 1-3 (shipped 2026-06-23)
+- ✅ **v2.0 Features** — Phases 1-3 (shipped 2026-06-23)
+- 📋 **v3.0 Future Enhancements** — (planned)
 
 ## Phases
 
-- [ ] **Phase 1: Interactive Dashboard Graphs** - Build Recharts graphs displaying platform traffic trends.
-- [ ] **Phase 2: Custom Role Creator** - Implement a policy editor form to register custom user roles.
-- [ ] **Phase 3: Audit Logs Feed** - Build a real-time websocket feed list displaying admin operations.
+<details>
+<summary>✅ v1.0 Layout & Access Control Foundation — SHIPPED 2026-06-23</summary>
 
-## Phase Details
+- [x] Phase 1: Layout & Foundation (2/2 plans) — completed 2026-06-22
+- [x] Phase 2: User Directory & RBAC Integration (3/3 plans) — completed 2026-06-22
+- [x] Phase 3: Dashboard Vitals (3/3 plans) — completed 2026-06-23
 
-### Phase 1: Interactive Dashboard Graphs
+</details>
 
-**Goal:** Build Recharts graphs displaying platform traffic trends.
-**Mode:** mvp
-**Depends on:** Nothing (first phase of v2.0)
-**Requirements:** [DASH-02]
-**Success Criteria** (what must be TRUE):
-  1. An interactive line/bar chart displaying daily API traffic trends is rendered inside `DashboardOverview.tsx`.
-  2. The chart uses mock data and transitions smoothly during language changes.
+<details>
+<summary>✅ v2.0 Features — SHIPPED 2026-06-23</summary>
 
-**Plans:** 1 plan
+- [x] Phase 1: Interactive Dashboard Graphs (1/1 plan) — completed 2026-06-23
+- [x] Phase 2: Custom Role Creator (1/1 plan) — completed 2026-06-23
+- [x] Phase 3: Audit Logs Feed (1/1 plan) — completed 2026-06-23
 
-Plans:
-- [ ] 01-01: Install Recharts library and build interactive traffic graphs (DASH-02).
-
-### Phase 2: Custom Role Creator
-
-**Goal:** Implement a policy editor form to register custom user roles.
-**Mode:** mvp
-**Depends on:** Phase 1
-**Requirements:** [RBAC-04]
-**Success Criteria** (what must be TRUE):
-  1. A "Create Custom Role" button opens a form screen/modal.
-  2. Form allows entering a role name and checking/unchecking specific system permissions.
-  3. Clicking save adds the custom role into the matrix list dynamically.
-
-**Plans:** 1 plan
-
-Plans:
-- [ ] 02-01: Build Custom Role Creator form and permissions editor (RBAC-04).
-
-### Phase 3: Audit Logs Feed
-
-**Goal:** Build a real-time websocket feed list displaying admin operations.
-**Mode:** mvp
-**Depends on:** Phase 2
-**Requirements:** [AUDIT-01]
-**Success Criteria** (what must be TRUE):
-  1. An Audit Logs panel displays a chronological list of administrative actions (e.g. "User Alice changed role of Bob to Moderator").
-  2. Feeds are dynamically updated with a simulated real-time stream.
-
-**Plans:** 1 plan
-
-Plans:
-- [ ] 03-01: Build Audit Logs feed widget with simulated real-time stream (AUDIT-01).
+</details>
 
 ## Progress
 
-Phases execute in numeric order: 1 → 2 → 3
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1 | 0/1 | Not started | - |
-| 2 | 0/1 | Not started | - |
-| 3 | 0/1 | Not started | - |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|---|---|---|---|---|
+| 1. Layout & Foundation | v1.0 | 2/2 | Complete | 2026-06-22 |
+| 2. User Directory & RBAC Integration | v1.0 | 3/3 | Complete | 2026-06-22 |
+| 3. Dashboard Vitals | v1.0 | 3/3 | Complete | 2026-06-23 |
+| 4. Interactive Dashboard Graphs | v2.0 | 1/1 | Complete | 2026-06-23 |
+| 5. Custom Role Creator | v2.0 | 1/1 | Complete | 2026-06-23 |
+| 6. Audit Logs Feed | v2.0 | 1/1 | Complete | 2026-06-23 |
 
 ---
-*Roadmap defined: 2026-06-23*
-*Last updated: 2026-06-23*
+*Roadmap updated: 2026-06-23 after v2.0 milestone completion*

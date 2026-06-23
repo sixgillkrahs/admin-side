@@ -17,11 +17,15 @@ Enable secure, clear, and efficient administration of the platform, specifically
 - ✓ Reusable Button primitive (`src/components/ui/button.tsx`) and `cn` utilities — existing
 - ✓ Set up a feature-based folder structure inside `src/features/` — Validated in Phase 1: layout-foundation
 - ✓ Create `src/components/common/` directory for shared UI layouts and components (e.g. Navigation, Headers) — Validated in Phase 1: layout-foundation
+- ✓ User Directory & RBAC Integration (User and Role tables, assignment modals, permission matrices) — Validated in Milestone v1.0 (Phase 2)
+- ✓ Dashboard Vitals (overview statistics cards, metrics grids, dynamic English/Vietnamese translations switcher) — Validated in Milestone v1.0 (Phase 3)
+- ✓ Interactive Dashboard Graphs (Recharts daily traffic line charts and hourly active session charts with i18n support) — Validated in Milestone v2.0 (Phase 1)
+- ✓ Custom Role Creator (form dialog, checkable/uncheckable permission fields, lifting state logic, form validation) — Validated in Milestone v2.0 (Phase 2)
+- ✓ Security Audit Logs Feed (chronological feed displaying admin changes with simulated web socket real-time logger) — Validated in Milestone v2.0 (Phase 3)
 
 ### Active
 
-- [ ] Implement Dashboard screen with overview metrics and platform status
-- [ ] Implement RBAC (Role-Based Access Control) management screens (User, Role, and Permission tables/forms)
+- [ ] (None yet — start a new milestone with /gsd-new-milestone)
 
 ### Out of Scope
 
@@ -29,7 +33,7 @@ Enable secure, clear, and efficient administration of the platform, specifically
 
 ## Context
 
-- **Backend Integration**: The application will communicate with a Go backend API service.
+- **Backend Integration**: Shipped milestone v2.0 with mock APIs and real-time simulator streams. Next milestone will connect these components to the Go backend API service.
 - **Design System**: Strict adherence to Shadcn UI aesthetic, styled via Tailwind CSS v4.
 
 ## Constraints
@@ -45,9 +49,12 @@ Enable secure, clear, and efficient administration of the platform, specifically
 | Feature-based folders | Group related files (components, hooks, api, types) under modular folders for better control | ✓ Good |
 | Shared components location | Put shared non-shadcn elements under `src/components/common/` to keep UI components separate | ✓ Good |
 | Tailwind v4 + Vite plugin | Leverages Vite native css compilation instead of legacy PostCSS setups | ✓ Good |
+| Recharts integration | Visualizing traffic trends and session details interactively | ✓ Good |
+| Custom Role dialog | Using Shadcn Checkbox/Dialog for policy mapping modal | ✓ Good |
+| Simulated WebSocket stream | Emulates real-time system log changes for frontend standalone demo | ✓ Good |
 
 ---
-*Last updated: 2026-06-22 after Phase 1 completion*
+*Last updated: 2026-06-23 after v2.0 milestone close*
 
 ## Evolution
 
