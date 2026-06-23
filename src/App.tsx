@@ -2,10 +2,20 @@ import { useState } from 'react';
 import { Layout } from '@/components/common/Layout';
 import { DashboardOverview } from '@/features/dashboard';
 import { RbacManagement } from '@/features/rbac';
-import { LoginScreen } from '@/features/auth';
+import { LoginScreen, useAuthStore } from '@/features/auth';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = useAuthStore((state) => state.token);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const renderContent = () => {
@@ -19,14 +29,16 @@ function App() {
     }
   };
 
-  if (!isLoggedIn) {
-    return <LoginScreen onLoginSuccess={() => setIsLoggedIn(true)} />;
+  if (!token) {
+    return <LoginScreen />;
   }
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-      {renderContent()}
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+        {renderContent()}
+      </Layout>
+    </QueryClientProvider>
   );
 }
 
