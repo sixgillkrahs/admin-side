@@ -8,9 +8,15 @@ An admin control panel frontend for the Business Chat application. It serves as 
 
 Enable secure, clear, and efficient administration of the platform, specifically focusing on user roles and permissions management (RBAC).
 
-## Current State
+## Current Milestone: v3.0 Go Backend API Integration
 
-Shipped milestone **v2.1** (`Login Screen & Authentication UI`). Currently planning the next milestone.
+**Goal:** Connect the standalone admin panel to the Go backend API service for auth, RBAC, and audit logging.
+
+**Target features:**
+- **Real User Authentication**: Integrate login credentials verification and token-based sessions.
+- **User Directory API**: Connect user lists, search, filtering, and role updates to the backend API.
+- **Dynamic RBAC Policies**: Synchronize custom role creations and permission matrices.
+- **Security Audit Logs**: Wire the feed to live backend logging (WebSocket/SSE).
 
 ## Requirements
 
@@ -32,7 +38,10 @@ Shipped milestone **v2.1** (`Login Screen & Authentication UI`). Currently plann
 
 ### Active
 
-(None yet — initialize next milestone to define requirements)
+- [ ] Real User Authentication integration (token verification, API-based login)
+- [ ] User Directory API integration (fetch users, search/filter, update roles via backend)
+- [ ] Dynamic RBAC policy integration (save custom roles and fetch matrix permissions from backend)
+- [ ] Security Audit Log integration (real-time stream or poll backend event logs)
 
 ### Out of Scope
 
@@ -65,7 +74,7 @@ Shipped milestone **v2.1** (`Login Screen & Authentication UI`). Currently plann
 | Localized Input Validation | Provided inline validation warning messages in red below fields, disabling input elements and language switcher during active loading redirection to prevent duplicate actions | ✓ Good |
 
 ---
-*Last updated: 2026-06-23 after v2.1 milestone close*
+*Last updated: 2026-06-23 after v3.0 milestone initialization*
 
 ## Evolution
 
