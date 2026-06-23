@@ -8,14 +8,9 @@ An admin control panel frontend for the Business Chat application. It serves as 
 
 Enable secure, clear, and efficient administration of the platform, specifically focusing on user roles and permissions management (RBAC).
 
-## Current Milestone: v2.1 Login Screen & Authentication UI
+## Current State
 
-**Goal:** Build a premium split-screen login page with brand visuals, localized forms, basic validation, and redirection flow.
-
-**Target features:**
-- Premium split-screen layout with side brand illustration/graphic and interactive login form.
-- Full localization (English & Vietnamese translation support for all form fields, labels, and placeholders).
-- Basic form validation (email format, password length) and simulated redirect to the admin dashboard.
+Shipped milestone **v2.1** (`Login Screen & Authentication UI`). Currently planning the next milestone.
 
 ## Requirements
 
@@ -31,12 +26,13 @@ Enable secure, clear, and efficient administration of the platform, specifically
 - ✓ Interactive Dashboard Graphs (Recharts daily traffic line charts and hourly active session charts with i18n support) — Validated in Milestone v2.0 (Phase 1)
 - ✓ Custom Role Creator (form dialog, checkable/uncheckable permission fields, lifting state logic, form validation) — Validated in Milestone v2.0 (Phase 2)
 - ✓ Security Audit Logs Feed (chronological feed displaying admin changes with simulated web socket real-time logger) — Validated in Milestone v2.0 (Phase 3)
+- ✓ Premium split-screen login layout with brand illustration/graphic and interactive login form — Validated in Milestone v2.1 (Phase 7)
+- ✓ Full localization (English & Vietnamese translation support for all form fields, labels, and placeholders) — Validated in Milestone v2.1 (Phase 7)
+- ✓ Basic form validation (email format, password length) and simulated redirect to the admin dashboard — Validated in Milestone v2.1 (Phase 8)
 
 ### Active
 
-- [ ] Premium split-screen login layout with brand illustration/graphic and interactive login form
-- [ ] Full localization (English & Vietnamese translation support for all form fields, labels, and placeholders)
-- [ ] Basic form validation (email format, password length) and simulated redirect to the admin dashboard
+(None yet — initialize next milestone to define requirements)
 
 ### Out of Scope
 
@@ -44,8 +40,9 @@ Enable secure, clear, and efficient administration of the platform, specifically
 
 ## Context
 
-- **Backend Integration**: Shipped milestone v2.0 with mock APIs and real-time simulator streams. Next milestone will connect these components to the Go backend API service.
-- **Design System**: Strict adherence to Shadcn UI aesthetic, styled via Tailwind CSS v4.
+- **Backend Integration**: Shipped milestone v2.0 with mock APIs/real-time streams, and v2.1 with client-side authentication mock routing. The next milestone will begin connecting components to the real Go backend API service.
+- **Design System**: Strict adherence to Shadcn UI aesthetic, styled via Tailwind CSS v4. Added Shadcn UI Label component.
+- **Codebase Size**: Standalone React administration application with structured authentication features.
 
 ## Constraints
 
@@ -63,9 +60,12 @@ Enable secure, clear, and efficient administration of the platform, specifically
 | Recharts integration | Visualizing traffic trends and session details interactively | ✓ Good |
 | Custom Role dialog | Using Shadcn Checkbox/Dialog for policy mapping modal | ✓ Good |
 | Simulated WebSocket stream | Emulates real-time system log changes for frontend standalone demo | ✓ Good |
+| App State Integration Routing | Used simple React state hook `isLoggedIn` in `App.tsx` since tab-state-based navigation is sufficient for the MVP | ✓ Good |
+| CSS Branding Panel | Used custom abstract CSS gradient styling for the branding panel background to avoid external assets and keep bundle size low | ✓ Good |
+| Localized Input Validation | Provided inline validation warning messages in red below fields, disabling input elements and language switcher during active loading redirection to prevent duplicate actions | ✓ Good |
 
 ---
-*Last updated: 2026-06-23 after v2.0 milestone close*
+*Last updated: 2026-06-23 after v2.1 milestone close*
 
 ## Evolution
 

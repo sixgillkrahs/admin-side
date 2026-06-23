@@ -1,5 +1,16 @@
 # Milestones
 
+## v2.1 (Shipped: 2026-06-23)
+
+**Phases completed:** 2 phases, 2 plans, 5 tasks
+
+**Key accomplishments:**
+
+- Split-screen login layout with premium abstract CSS brand visual panel, i18n English/Vietnamese language toggle, and conditional app routing state integration
+- Client-side email format and password length validations, inline error messages, disabled loading state, and 1.5s simulated redirect timer
+
+---
+
 ## v2.0 (Shipped: 2026-06-23)
 
 **Phases completed:** 3 phases, 3 plans, 10 tasks
