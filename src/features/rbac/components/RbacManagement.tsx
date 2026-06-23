@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import type { User, Role } from '../types';
@@ -6,6 +6,7 @@ import { UserDirectory } from './UserDirectory';
 import { PermissionMatrix } from './PermissionMatrix';
 import { EditRoleModal } from './EditRoleModal';
 import { CreateRoleModal } from './CreateRoleModal';
+import { AuditLogsFeed, type AuditEvent } from './AuditLogsFeed';
 
 const MOCK_USERS: User[] = [
   { id: '1', name: 'Alice Nguyen', email: 'alice@businesschat.com', role: 'Admin', status: 'active', joinedDate: '2026-01-10' },
@@ -29,17 +30,60 @@ export function RbacManagement() {
     User: { 'read:messages': true, 'write:messages': false, 'manage:roles': false, 'admin:all': false }
   });
 
+  const [logs, setLogs] = useState<AuditEvent[]>(() => [
+    {
+      id: 'init-1',
+      type: 'login',
+      timestamp: new Date(Date.now() - 60000 * 5).toTimeString().split(' ')[0],
+      details: { name: 'Alice Nguyen' },
+    },
+    {
+      id: 'init-2',
+      type: 'viewMatrix',
+      timestamp: new Date(Date.now() - 60000 * 2).toTimeString().split(' ')[0],
+      details: { name: 'Ethan Vu' },
+    },
+  ]);
+
+  const addLog = (type: AuditEvent['type'], details: Record<string, string>) => {
+    const now = new Date();
+    const timestamp = now.toTimeString().split(' ')[0]; // HH:MM:ss
+    const newLog: AuditEvent = {
+      id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9),
+      type,
+      timestamp,
+      details,
+    };
+    setLogs((prev) => [newLog, ...prev].slice(0, 20));
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const userNames = users.map((u) => u.name);
+      const randomUser = userNames[Math.floor(Math.random() * userNames.length)] || 'System User';
+      const eventTypes: AuditEvent['type'][] = ['login', 'viewMatrix'];
+      const randomType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+      addLog(randomType, { name: randomUser });
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [users]);
+
   const handleEditRole = (user: User) => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
   const handleSaveRole = (userId: string, newRole: Role) => {
+    const targetUser = users.find((u) => u.id === userId);
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === userId ? { ...user, role: newRole } : user
       )
     );
+    if (targetUser) {
+      addLog('changeRole', { user: targetUser.name, role: newRole });
+    }
   };
 
   const handleCreateRole = (roleName: string, permissions: Record<string, boolean>) => {
@@ -48,6 +92,7 @@ export function RbacManagement() {
       ...prev,
       [roleName]: permissions,
     }));
+    addLog('createRole', { role: roleName });
   };
 
   return (
@@ -75,6 +120,11 @@ export function RbacManagement() {
         {/* Permission Matrix */}
         <div className="pt-4 border-t border-border">
           <PermissionMatrix roles={roles} rolePermissions={rolePermissions} />
+        </div>
+
+        {/* Security Audit Logs */}
+        <div className="pt-4 border-t border-border">
+          <AuditLogsFeed logs={logs} />
         </div>
       </div>
 
