@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus } from 'lucide-react';
+import { Plus, Users, ShieldCheck, ScrollText } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { User, Role } from '../types';
 import { UserDirectory } from './UserDirectory';
@@ -16,9 +16,22 @@ interface RoleObject {
   description: string;
 }
 
+type TabId = 'users' | 'matrix' | 'audit';
+
+interface Tab {
+  id: TabId;
+  label: string;
+  icon: React.FC<{ className?: string }>;
+  description: string;
+  badge?: number | null;
+}
+
 export function RbacManagement() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+
+  // Active tab state
+  const [activeTab, setActiveTab] = useState<TabId>('users');
 
   // Search, Pagination, Sorting and Filter States
   const [page, setPage] = useState(1);
@@ -94,11 +107,8 @@ export function RbacManagement() {
       const oldRoleObj = rolesData?.find((r) => r.name.toLowerCase() === oldRoleName.toLowerCase());
       const newRoleObj = rolesData?.find((r) => r.name.toLowerCase() === newRoleName.toLowerCase());
 
-      if (!newRoleObj) {
-        throw new Error('Target role not found');
-      }
+      if (!newRoleObj) throw new Error('Target role not found');
 
-      // Revoke old role if different
       if (oldRoleObj && oldRoleObj.id !== newRoleObj.id) {
         try {
           await api.delete(`/api/v1/users/${userId}/roles`, {
@@ -109,10 +119,7 @@ export function RbacManagement() {
         }
       }
 
-      // Assign new role
-      await api.post(`/api/v1/users/${userId}/roles`, {
-        role_id: newRoleObj.id,
-      });
+      await api.post(`/api/v1/users/${userId}/roles`, { role_id: newRoleObj.id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -137,11 +144,7 @@ export function RbacManagement() {
   const handleSaveRole = (userId: string, newRole: Role) => {
     const targetUser = users.find((u) => u.id === userId);
     if (targetUser) {
-      assignRoleMutation.mutate({
-        userId,
-        oldRoleName: targetUser.role,
-        newRoleName: newRole,
-      });
+      assignRoleMutation.mutate({ userId, oldRoleName: targetUser.role, newRoleName: newRole });
     }
   };
 
@@ -149,25 +152,107 @@ export function RbacManagement() {
     await createRoleMutation.mutateAsync({ name: roleName, description });
   };
 
+  // Tab definitions
+  const tabs: Tab[] = [
+    {
+      id: 'users',
+      label: 'Người dùng',
+      icon: Users,
+      description: 'Quản lý danh sách và phân quyền người dùng',
+      badge: usersData?.total ?? null,
+    },
+    {
+      id: 'matrix',
+      label: 'Ma trận quyền',
+      icon: ShieldCheck,
+      description: 'Cấu hình chính sách truy cập theo vai trò',
+      badge: rolesList.length > 0 ? rolesList.length : null,
+    },
+    {
+      id: 'audit',
+      label: 'Nhật ký kiểm toán',
+      icon: ScrollText,
+      description: 'Theo dõi hoạt động hệ thống theo thời gian thực',
+      badge: null,
+    },
+  ];
+
+  const activeTabDef = tabs.find((t) => t.id === activeTab)!;
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('rbac.title')}</h1>
-          <p className="text-muted-foreground mt-1">{t('rbac.description')}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{t('rbac.description')}</p>
         </div>
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer"
-        >
-          <Plus className="mr-2 size-4" />
-          {t('rbac.createRoleBtn')}
-        </button>
+        {activeTab === 'users' && (
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-all hover:bg-primary/90 hover:shadow-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring select-none cursor-pointer"
+          >
+            <Plus className="mr-2 size-4" />
+            {t('rbac.createRoleBtn')}
+          </button>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
-        {/* User Directory */}
-        <div className="space-y-4">
+      {/* Tab Navigation */}
+      <div className="relative">
+        {/* Tab bar container */}
+        <div className="flex items-stretch gap-1 rounded-xl border border-border bg-muted/40 p-1 backdrop-blur-sm">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={[
+                  'relative flex flex-1 items-center justify-center gap-2.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 select-none cursor-pointer outline-none',
+                  isActive
+                    ? 'bg-background text-foreground shadow-sm border border-border/60'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-background/60',
+                ].join(' ')}
+              >
+                <Icon className={`size-4 shrink-0 transition-colors ${isActive ? 'text-primary' : ''}`} />
+                <span className="hidden sm:inline truncate">{tab.label}</span>
+                {tab.badge != null && tab.badge > 0 && (
+                  <span
+                    className={[
+                      'inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full text-[10px] font-bold tabular-nums transition-colors',
+                      isActive
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-muted-foreground/15 text-muted-foreground',
+                    ].join(' ')}
+                  >
+                    {tab.badge > 999 ? '999+' : tab.badge}
+                  </span>
+                )}
+                {/* Live dot for audit tab */}
+                {tab.id === 'audit' && (
+                  <span className="relative flex size-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full size-2 bg-emerald-500" />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tab description strip */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground -mt-2">
+        <activeTabDef.icon className="size-3.5 text-primary shrink-0" />
+        <span>{activeTabDef.description}</span>
+      </div>
+
+      {/* Tab Content */}
+      <div className="min-h-[400px]">
+        {/* Users tab */}
+        <div className={activeTab === 'users' ? 'block' : 'hidden'}>
           <UserDirectory
             users={users}
             onEditRole={handleEditRole}
@@ -175,10 +260,7 @@ export function RbacManagement() {
             limit={limit}
             totalUsers={usersData?.total || 0}
             onPageChange={setPage}
-            onLimitChange={(l) => {
-              setLimit(l);
-              setPage(1);
-            }}
+            onLimitChange={(l) => { setLimit(l); setPage(1); }}
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={(field) => {
@@ -192,31 +274,25 @@ export function RbacManagement() {
             searchQuery={search}
             onSearchChange={setSearch}
             selectedRole={selectedRole}
-            onRoleChange={(r) => {
-              setSelectedRole(r);
-              setPage(1);
-            }}
+            onRoleChange={(r) => { setSelectedRole(r); setPage(1); }}
             selectedStatus={selectedStatus}
-            onStatusChange={(s) => {
-              setSelectedStatus(s);
-              setPage(1);
-            }}
+            onStatusChange={(s) => { setSelectedStatus(s); setPage(1); }}
             rolesList={rolesList}
           />
         </div>
 
-        {/* Permission Matrix — self-contained, fetches its own data */}
-        <div className="pt-4 border-t border-border">
+        {/* Permission Matrix tab */}
+        <div className={activeTab === 'matrix' ? 'block' : 'hidden'}>
           <PermissionMatrix />
         </div>
 
-        {/* Security Audit Logs — self-contained SSE stream */}
-        <div className="pt-4 border-t border-border">
+        {/* Audit Logs tab */}
+        <div className={activeTab === 'audit' ? 'block' : 'hidden'}>
           <AuditLogsFeed />
         </div>
       </div>
 
-      {/* Edit Role Modal */}
+      {/* Modals (always mounted, controlled by isOpen) */}
       {selectedUser && (
         <EditRoleModal
           key={selectedUser.id}
@@ -228,7 +304,6 @@ export function RbacManagement() {
         />
       )}
 
-      {/* Create Custom Role Modal */}
       <CreateRoleModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
