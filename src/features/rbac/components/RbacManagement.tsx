@@ -7,7 +7,7 @@ import { UserDirectory } from './UserDirectory';
 import { PermissionMatrix } from './PermissionMatrix';
 import { EditRoleModal } from './EditRoleModal';
 import { CreateRoleModal } from './CreateRoleModal';
-import { AuditLogsFeed, type AuditEvent } from './AuditLogsFeed';
+import { AuditLogsFeed } from './AuditLogsFeed';
 import { api } from '@/lib/api';
 
 interface RoleObject {
@@ -33,33 +33,6 @@ export function RbacManagement() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  const [logs, setLogs] = useState<AuditEvent[]>(() => [
-    {
-      id: 'init-1',
-      type: 'login',
-      timestamp: new Date(Date.now() - 60000 * 5).toTimeString().split(' ')[0],
-      details: { name: 'Alice Nguyen' },
-    },
-    {
-      id: 'init-2',
-      type: 'viewMatrix',
-      timestamp: new Date(Date.now() - 60000 * 2).toTimeString().split(' ')[0],
-      details: { name: 'Ethan Vu' },
-    },
-  ]);
-
-  const addLog = (type: AuditEvent['type'], details: Record<string, string>) => {
-    const now = new Date();
-    const timestamp = now.toTimeString().split(' ')[0]; // HH:MM:ss
-    const newLog: AuditEvent = {
-      id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9),
-      type,
-      timestamp,
-      details,
-    };
-    setLogs((prev) => [newLog, ...prev].slice(0, 20));
-  };
 
   // Debounce search input
   useEffect(() => {
@@ -115,20 +88,6 @@ export function RbacManagement() {
     }));
   }, [usersData]);
 
-  // Sync log simulation with users query
-  useEffect(() => {
-    if (users.length === 0) return;
-    const interval = setInterval(() => {
-      const userNames = users.map((u) => u.name);
-      const randomUser = userNames[Math.floor(Math.random() * userNames.length)] || 'System User';
-      const eventTypes: AuditEvent['type'][] = ['login', 'viewMatrix'];
-      const randomType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-      addLog(randomType, { name: randomUser });
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, [users]);
-
   // Mutation for assigning a role to a user
   const assignRoleMutation = useMutation({
     mutationFn: async ({ userId, oldRoleName, newRoleName }: { userId: string; oldRoleName: string; newRoleName: string }) => {
@@ -155,12 +114,8 @@ export function RbacManagement() {
         role_id: newRoleObj.id,
       });
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      const targetUser = users.find((u) => u.id === variables.userId);
-      if (targetUser) {
-        addLog('changeRole', { user: targetUser.name, role: variables.newRoleName });
-      }
     },
   });
 
@@ -168,10 +123,9 @@ export function RbacManagement() {
   const createRoleMutation = useMutation({
     mutationFn: (vars: { name: string; description: string }) =>
       api.post('/api/v1/roles', { name: vars.name, description: vars.description }),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['roles'] });
       queryClient.invalidateQueries({ queryKey: ['policies'] });
-      addLog('createRole', { role: variables.name });
     },
   });
 
@@ -256,9 +210,9 @@ export function RbacManagement() {
           <PermissionMatrix />
         </div>
 
-        {/* Security Audit Logs */}
+        {/* Security Audit Logs — self-contained SSE stream */}
         <div className="pt-4 border-t border-border">
-          <AuditLogsFeed logs={logs} />
+          <AuditLogsFeed />
         </div>
       </div>
 
