@@ -37,7 +37,7 @@
 
 ### 🚧 v3.0 Go Backend API Integration (Planned)
 
-- [ ] **Phase 9: Go Backend Auth Integration** - Connect credentials verification, session storage, and client IP checking to the backend API. (planned)
+- [x] **Phase 9: Go Backend Auth Integration** - Connect credentials verification, session storage, and client IP checking to the backend API. (planned) (completed 2026-06-23)
 - [ ] **Phase 10: User Directory API & Assignments** - Connect the user list table, remote pagination/sorting/filtering, and dynamic role modifications. (planned)
 - [ ] **Phase 11: Dynamic Access Policy Matrix** - Integrate role matrices, permission toggling (Casbin synchronization), and custom role creation. (planned)
 - [ ] **Phase 12: Real-Time Observability Audit logs** - Implement Server-Sent Events (SSE) stream client with connection status monitoring and backpressure management. (planned)
@@ -55,12 +55,15 @@
   1. Submitting valid credentials requests POST `/api/v1/auth/login`, retrieves JWT access token, and stores it in-memory via Zustand.
   2. Frontend automatically catches `401 Unauthorized` token failures (e.g. expiration, IP mismatch), clears the Zustand auth store, and redirects to the login screen with localized warnings.
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 
-- [ ] 09-01: Connect login credentials verification and token-based session retrieval via POST `/api/v1/auth/login` to Zustand state (API-01).
-- [ ] 09-02: Implement client IP verification response handling and centralize `401 Unauthorized` token failure catching to clear session data and redirect to login screen (API-02).
+- [x] 09-01-PLAN.md
+- [x] 09-02-PLAN.md
+
+- [x] 09-01: Connect login credentials verification and token-based session retrieval via POST `/api/v1/auth/login` to Zustand state (API-01).
+- [x] 09-02: Implement client IP verification response handling and centralize `401 Unauthorized` token failure catching to clear session data and redirect to login screen (API-02).
 
 ### Phase 10: User Directory API & Assignments
 
@@ -134,7 +137,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Audit Logs Feed | v2.0 | 1/1 | Complete | 2026-06-23 |
 | 7. Login Layout & Branding Visuals | v2.1 | 1/1 | Complete | 2026-06-23 |
 | 8. Login Forms & Form Validation | v2.1 | 1/1 | Complete | 2026-06-23 |
-| 9. Go Backend Auth Integration | v3.0 | 0/2 | Planned | — |
+| 9. Go Backend Auth Integration | v3.0 | 2/2 | Complete   | 2026-06-23 |
 | 10. User Directory API & Assignments | v3.0 | 0/2 | Planned | — |
 | 11. Dynamic Access Policy Matrix | v3.0 | 0/3 | Planned | — |
 | 12. Real-Time Observability Audit logs | v3.0 | 0/3 | Planned | — |
